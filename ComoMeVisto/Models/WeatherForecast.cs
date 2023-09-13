@@ -10,6 +10,6 @@
         public double WindSpeed { get; set; }
         public string Time { get; set; }
         public string Date { get; set; }
-        public string ClothingRecommendation { get; set; }
+        public Clothing Clothing { get; set; }
     }
 }

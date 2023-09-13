@@ -23,9 +23,7 @@ namespace ComoMeVisto.Controllers
             try
             {
                 var client = _httpClientFactory.CreateClient();
-
-                // Configurar la URL de la API de pronóstico del clima
-                string apiKey = "ef8fcd8d92838aa93d1ed34adcc2375b"; // Reemplaza con tu clave de API real
+                string apiKey = "ef8fcd8d92838aa93d1ed34adcc2375b";
                 string apiUrl = $"https://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric";
 
                 var response = await client.GetAsync(apiUrl);
@@ -51,7 +49,7 @@ namespace ComoMeVisto.Controllers
         private List<WeatherForecast> ProcessWeatherData(Forecast forecast)
         {
             var weatherForecasts = new List<WeatherForecast>();
-            string utc = "03:00";
+            Clothing clothing = new Clothing();
 
             foreach (var weatherList in forecast.list)
             {
@@ -72,13 +70,43 @@ namespace ComoMeVisto.Controllers
                         WindSpeed = weatherList.wind.speed,
                         Time = (Convert.ToDateTime(weatherList.dt_txt).AddHours(-3)).ToShortTimeString(),
                         Date = Convert.ToDateTime(weatherList.dt_txt).ToShortDateString(),
-                        //ClothingRecommendation = clothingRecommendation
+                        Clothing = DetermineClothing(weatherList.main.temp, weatherList.main.humidity, weathers.main, weathers.description, weatherList.wind.speed),
                     };
                     weatherForecasts.Add(weatherForecast);
                 }
             }
 
             return weatherForecasts;
+        }
+
+        private Clothing DetermineClothing(double temp,double hum,string weather,string weatherDesc,double windSpeed)
+        {
+            Clothing clothing = new Clothing();
+
+            if (temp < 13)
+            {
+                clothing.Cap = true;
+                clothing.WoolenCap = true;
+                clothing.Shirt = true;
+                clothing.ThickJacket = true;
+                clothing.LongPants = true;
+            }
+            else if (temp < 20)
+            {
+                clothing.Cap = true;
+                clothing.Shirt = true;
+                clothing.LightJacket = true;
+                clothing.LongPants = true;
+            }
+            else if (temp >= 20)
+            {
+                clothing.Cap = true;
+                clothing.Shirt = true;
+                clothing.Shorts = true;
+            }
+
+            return clothing;
+
         }
 
     }
