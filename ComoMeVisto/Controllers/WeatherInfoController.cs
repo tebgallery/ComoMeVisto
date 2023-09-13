@@ -51,6 +51,7 @@ namespace ComoMeVisto.Controllers
         private List<WeatherForecast> ProcessWeatherData(Forecast forecast)
         {
             var weatherForecasts = new List<WeatherForecast>();
+            string utc = "03:00";
 
             foreach (var weatherList in forecast.list)
             {
@@ -69,7 +70,8 @@ namespace ComoMeVisto.Controllers
                         Weather = weathers.main,
                         Description = weathers.description,
                         WindSpeed = weatherList.wind.speed,
-                        Date = Convert.ToDateTime(weatherList.dt_txt),
+                        Time = (Convert.ToDateTime(weatherList.dt_txt).AddHours(-3)).ToShortTimeString(),
+                        Date = Convert.ToDateTime(weatherList.dt_txt).ToShortDateString(),
                         //ClothingRecommendation = clothingRecommendation
                     };
                     weatherForecasts.Add(weatherForecast);
