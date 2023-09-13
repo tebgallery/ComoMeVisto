@@ -11,6 +11,7 @@ namespace ComoMeVisto.Models
         public bool ThickJacket { get; set; }
         public bool Shorts { get; set; }
         public bool LongPants { get; set; }
+        public string Recommendation { get; set; }
 
     }
 }

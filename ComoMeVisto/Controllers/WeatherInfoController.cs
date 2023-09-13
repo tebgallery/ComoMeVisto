@@ -90,6 +90,7 @@ namespace ComoMeVisto.Controllers
                 clothing.Shirt = true;
                 clothing.ThickJacket = true;
                 clothing.LongPants = true;
+                clothing.Recommendation = "Temperatura Baja";
             }
             else if (temp < 20)
             {
@@ -97,12 +98,14 @@ namespace ComoMeVisto.Controllers
                 clothing.Shirt = true;
                 clothing.LightJacket = true;
                 clothing.LongPants = true;
+                clothing.Recommendation = "Temperatura Normal";
             }
             else if (temp >= 20)
             {
                 clothing.Cap = true;
                 clothing.Shirt = true;
                 clothing.Shorts = true;
+                clothing.Recommendation = "Temperatura Alta";
             }
 
             return clothing;
