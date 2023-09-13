@@ -33,9 +33,11 @@ namespace ComoMeVisto.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var weatherData = JsonConvert.DeserializeObject<WeatherInfo>(content);
+                    var weatherData = JsonConvert.DeserializeObject<Forecast>(content);
 
-                    return Ok(weatherData);
+                    var weatherForecasts = ProcessWeatherData(weatherData);
+
+                    return Ok(weatherForecasts);
                 }
 
                 return StatusCode((int)response.StatusCode);
@@ -45,5 +47,37 @@ namespace ComoMeVisto.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        private List<WeatherForecast> ProcessWeatherData(Forecast forecast)
+        {
+            var weatherForecasts = new List<WeatherForecast>();
+
+            foreach (var weatherList in forecast.list)
+            {
+                // Calcula la recomendación de vestimenta basada en las condiciones climáticas
+                //string clothingRecommendation = DetermineClothingRecommendation(forecast);
+
+                // Crea una instancia de WeatherForecast y agrega los datos
+
+                foreach (var weathers in weatherList.weather)
+                {
+                    var weatherForecast = new WeatherForecast
+                    {
+                        CityName = forecast.city.name,
+                        Temperature = weatherList.main.temp,
+                        Humidity = Convert.ToString(weatherList.main.humidity) + "%",
+                        Weather = weathers.main,
+                        Description = weathers.description,
+                        WindSpeed = weatherList.wind.speed,
+                        Date = Convert.ToDateTime(weatherList.dt_txt),
+                        //ClothingRecommendation = clothingRecommendation
+                    };
+                    weatherForecasts.Add(weatherForecast);
+                }
+            }
+
+            return weatherForecasts;
+        }
+
     }
 }

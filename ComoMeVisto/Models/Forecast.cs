@@ -32,7 +32,7 @@
         public Clouds clouds { get; set; }
         public Wind wind { get; set; }
         public int visibility { get; set; }
-        public int pop { get; set; }
+        public double pop { get; set; }
         public Sys sys { get; set; }
         public string dt_txt { get; set; }
     }
@@ -50,7 +50,7 @@
         public double temp_kf { get; set; }
     }
 
-    public class WeatherInfo
+    public class Forecast
     {
         public string cod { get; set; }
         public int message { get; set; }
